@@ -1,0 +1,21 @@
+# Entornos virtuales
+venv/
+env/
+.env
+.venv/
+env.bak/
+venv.bak/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de datos locales
+*.xls
+*.xlsx
+*.csv
+
+# Archivos temporales de sistema
+.DS_Store
+Thumbs.db
