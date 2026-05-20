@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explicación de qué hace y cómo funciona combustible_ybarato.es">
+  <title>Qué y Cómo — Combustible Barato España</title>
+  
+  <!-- Fuente moderna Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ── Variables de Diseño ── */
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0a081a 0%, #12102e 50%, #060514 100%);
+      --accent-color: #764ba2;
+      --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --highlight: #6ee7b7;
+    }
+
+    /* ── Estilos Generales ── */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Contenedor Principal ── */
+    .container {
+      max-width: 900px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    /* ── Cabecera ── */
+    header {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .logo-container {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-weight: 300;
+    }
+
+    /* ── Tarjetas Informativas (Secciones) ── */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 2.5rem;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 30px 60px rgba(102, 126, 234, 0.15);
+      border-color: rgba(102, 126, 234, 0.3);
+    }
+
+    .card-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #fff;
+    }
+
+    .card-title span {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ── Listas y Pasos ── */
+    ul {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    li {
+      position: relative;
+      padding-left: 1.75rem;
+      font-weight: 400;
+      color: #cbd5e1;
+    }
+
+    li strong {
+      color: var(--text-main);
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    /* Viñeta personalizada con gradiente */
+    li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-gradient);
+      box-shadow: 0 0 10px rgba(102, 126, 234, 0.8);
+    }
+
+    /* Resaltados */
+    .highlight-text {
+      color: var(--highlight);
+      font-weight: 600;
+    }
+
+    /* ── Pie de Página (Footer) ── */
+    footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 300;
+    }
+
+    footer a {
+      color: #a5b4fc;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: #cbd5e1;
+      text-decoration: underline;
+    }
+
+    /* ── Animaciones CSS ── */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Cabecera -->
+    <header>
+      <div class="logo-container">⛽</div>
+      <h1>¿Qué y Cómo?</h1>
+      <p class="subtitle">Descubre el funcionamiento interno de combustible_ybarato.es</p>
+    </header>
+
+    <!-- Cuerpo: Dos Columnas Responsivas -->
+    <div class="grid">
+      
+      <!-- Columna 1: Qué Hace -->
+      <section class="card">
+        <h2 class="card-title">🔍 <span>Qué hace</span> este programa</h2>
+        <ul>
+          <li>
+            <strong>Buscador Inteligente de Combustible</strong>
+            Localiza de forma instantánea las estaciones de servicio que ofrecen el carburante más barato en cualquier punto de España.
+          </li>
+          <li>
+            <strong>Filtrado Geográfico por Radio</strong>
+            Delimita la búsqueda estableciendo un rango de acción de entre <span class="highlight-text">1 y 50 kilómetros</span> a la redonda desde la ubicación del usuario.
+          </li>
+          <li>
+            <strong>Ordenación Personalizada Dual</strong>
+            Permite elegir si priorizar el ahorro de dinero (<span class="highlight-text">Precio</span>) o el ahorro de tiempo (<span class="highlight-text">Distancia</span>) con un sistema de desempate automático inteligente.
+          </li>
+          <li>
+            <strong>Acceso Directo a Rutas</strong>
+            Genera accesos directos dinámicos a Google Maps para trazar la ruta de navegación GPS directa hacia la gasolinera seleccionada con un solo clic.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Columna 2: Cómo lo Hace -->
+      <section class="card">
+        <h2 class="card-title">⚙️ <span>Cómo lo hace</span> técnicamente</h2>
+        <ul>
+          <li>
+            <strong>Descarga y Caché del Ministerio</strong>
+            Consume diariamente los datos del Geoportal de Gasolineras del Gobierno de España. Para optimizar el ancho de banda y la velocidad, refresca automáticamente la base de datos local sólo a partir de las <span class="highlight-text">06:00 AM</span>.
+          </li>
+          <li>
+            <strong>Procesamiento en Python y Pandas</strong>
+            Limpia el archivo de origen (XLS), convirtiendo los formatos decimales, eliminando registros corruptos sin coordenadas y excluyendo estaciones sin precios publicados.
+          </li>
+          <li>
+            <strong>Cálculo de Distancia (Haversine)</strong>
+            Utiliza trigonometría esférica de alta precisión para determinar en tiempo real la distancia lineal exacta en kilómetros a cada estación sobre el globo terrestre.
+          </li>
+          <li>
+            <strong>Geocodificación y Ubicación Dinámica</strong>
+            Combina tres métodos de posicionamiento: geolocalización por GPS nativo del navegador del usuario, búsqueda textual de municipios mediante OpenStreetMap (Nominatim) o coordenadas ingresadas manualmente.
+          </li>
+        </ul>
+      </section>
+
+    </div>
+
+    <!-- Pie de página -->
+    <footer>
+      <p>© 2026 combustible_ybarato.es · Desarrollado con Inteligencia Artificial</p>
+      <p><a href="app.py" title="Ver código de la aplicación">Ver aplicación</a> · Datos del Ministerio para la Transición Ecológica</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>
