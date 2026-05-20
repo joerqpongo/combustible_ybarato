@@ -48,11 +48,11 @@ st.markdown("""
     border: 1px solid rgba(255,255,255,0.1);
   }
   .hero-header h1 {
-    font-size: 2.8rem; font-weight: 800; color: #fff;
+    font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 800; color: #fff;
     margin: 0; letter-spacing: -1px;
     text-shadow: 0 2px 20px rgba(0,0,0,0.4);
   }
-  .hero-header p { color: rgba(255,255,255,0.8); font-size: 1.05rem; margin: 0.5rem 0 0; }
+  .hero-header p { color: rgba(255,255,255,0.8); font-size: clamp(0.9rem, 2vw, 1.05rem); margin: 0.5rem 0 0; }
 
   /* ── Metric cards ── */
   .metric-card {
@@ -66,11 +66,40 @@ st.markdown("""
   }
   .metric-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
   .metric-card .label { color: rgba(255,255,255,0.6); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1px; }
-  .metric-card .value { color: #fff; font-size: 1.7rem; font-weight: 700; margin-top: 0.2rem; }
+  .metric-card .value { color: #fff; font-size: clamp(1.3rem, 3vw, 1.7rem); font-weight: 700; margin-top: 0.2rem; }
   .metric-card .sub   { color: #6ee7b7; font-size: 0.8rem; margin-top: 0.15rem; }
 
-  /* ── Tabla de resultados ── */
-  .results-table { border-radius: 12px; overflow: hidden; }
+  /* ── Tabla de resultados responsiva ── */
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.02);
+    margin: 1rem 0 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    color: #e2e8f0;
+  }
+  .results-table th, .results-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    white-space: nowrap;
+  }
+  .results-table th {
+    background-color: rgba(255,255,255,0.06);
+    font-weight: 600;
+    color: #fff;
+    border-bottom: 2px solid rgba(255,255,255,0.15);
+  }
+  .results-table tr:hover {
+    background-color: rgba(255,255,255,0.04);
+  }
   .stDataFrame { border-radius: 12px !important; }
 
   /* ── Sidebar ── */
@@ -114,6 +143,19 @@ st.markdown("""
 
   /* ── Divider ── */
   .custom-divider { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 1.2rem 0; }
+
+  /* ── Ajustes responsive específicos para móviles/tablets ── */
+  @media (max-width: 768px) {
+    .hero-header {
+      padding: 1.5rem 1rem;
+      margin-bottom: 1rem;
+      border-radius: 12px;
+    }
+    .metric-card {
+      padding: 1rem 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+  }
 </style>
 """, unsafe_allow_html=True)
 
@@ -255,8 +297,9 @@ def buscar_estaciones(
     radio_km: float,
     col_precio: str,
     max_resultados: int = 50,
+    ordenar_por: str = "Precio",
 ) -> pd.DataFrame:
-    """Filtra estaciones en el radio dado con precio disponible y calcula distancia."""
+    """Filtra estaciones en el radio dado con precio disponible, calcula distancia y ordena por el criterio elegido."""
     # Columna de precio puede no existir si el combustible no está en el dataset
     if col_precio not in df.columns:
         return pd.DataFrame()
@@ -269,8 +312,13 @@ def buscar_estaciones(
         lambda r: haversine(lat, lon, r["Latitud"], r["Longitud"]), axis=1
     )
     sub = sub[sub["Distancia (km)"] <= radio_km]
-    sub = sub.sort_values("Distancia (km)").head(max_resultados * 5)
-    sub = sub.sort_values(col_precio).head(max_resultados)
+    if sub.empty:
+        return pd.DataFrame()
+
+    if ordenar_por == "Precio":
+        sub = sub.sort_values([col_precio, "Distancia (km)"], ascending=[True, True]).head(max_resultados)
+    else:
+        sub = sub.sort_values(["Distancia (km)", col_precio], ascending=[True, True]).head(max_resultados)
 
     # Columna enlace Maps
     sub["📍 Maps"] = sub.apply(
@@ -348,6 +396,13 @@ def main():
         # Número de resultados
         max_res = st.slider("📊 Máx. resultados", 10, 100, 25, 5)
 
+        # Criterio de ordenación
+        criterio_orden = st.selectbox(
+            "🔃 Ordenar resultados por",
+            ["Precio (más barato primero)", "Distancia (más cercano primero)"],
+            index=0,
+        )
+
         st.markdown('<hr class="custom-divider">', unsafe_allow_html=True)
         st.markdown("## 📍 Tu ubicación")
 
@@ -421,7 +476,8 @@ def main():
         st.info("👈 Configura tu ubicación en la barra lateral para ver resultados.")
         return
 
-    results = buscar_estaciones(df, lat_user, lon_user, radio_km, col_precio, max_res)
+    ordenar_por = "Precio" if "Precio" in criterio_orden else "Distancia"
+    results = buscar_estaciones(df, lat_user, lon_user, radio_km, col_precio, max_res, ordenar_por)
 
     # ── Métricas resumen ──
     col1, col2, col3, col4 = st.columns(4)
@@ -488,9 +544,10 @@ def main():
     if horario_col and horario_col in table_df.columns: rename_map[horario_col] = "⏰ Horario"
     table_df = table_df.rename(columns=rename_map)
 
-    # Render HTML con enlaces Maps
+    # Render HTML con enlaces Maps en un contenedor con scroll horizontal
+    tabla_html = table_df.to_html(escape=False, index=True, classes="results-table")
     st.markdown(
-        table_df.to_html(escape=False, index=True, classes="results-table"),
+        f'<div class="table-container">{tabla_html}</div>',
         unsafe_allow_html=True,
     )
 
