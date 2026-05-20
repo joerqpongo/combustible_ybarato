@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Explicación de qué hace y cómo funciona combustible_ybarato.es">
   <title>Qué y Cómo — Combustible Barato España</title>
-  
+
   <!-- Fuente moderna Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
   <style>
     /* ── Variables de Diseño ── */
     :root {
@@ -197,6 +199,7 @@
         opacity: 0;
         transform: translateY(20px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -204,19 +207,23 @@
     }
 
     @keyframes float {
-      0%, 100% {
+
+      0%,
+      100% {
         transform: translateY(0);
       }
+
       50% {
         transform: translateY(-8px);
       }
     }
   </style>
 </head>
+
 <body>
 
   <div class="container">
-    
+
     <!-- Cabecera -->
     <header>
       <div class="logo-container">⛽</div>
@@ -226,26 +233,30 @@
 
     <!-- Cuerpo: Dos Columnas Responsivas -->
     <div class="grid">
-      
+
       <!-- Columna 1: Qué Hace -->
       <section class="card">
         <h2 class="card-title">🔍 <span>Qué hace</span> este programa</h2>
         <ul>
           <li>
             <strong>Buscador Inteligente de Combustible</strong>
-            Localiza de forma instantánea las estaciones de servicio que ofrecen el carburante más barato en cualquier punto de España.
+            Localiza de forma instantánea las estaciones de servicio que ofrecen el carburante más barato en cualquier
+            punto de España.
           </li>
           <li>
             <strong>Filtrado Geográfico por Radio</strong>
-            Delimita la búsqueda estableciendo un rango de acción de entre <span class="highlight-text">1 y 50 kilómetros</span> a la redonda desde la ubicación del usuario.
+            Delimita la búsqueda estableciendo un rango de acción de entre <span class="highlight-text">1 y 50
+              kilómetros</span> a la redonda desde la ubicación del usuario.
           </li>
           <li>
             <strong>Ordenación Personalizada Dual</strong>
-            Permite elegir si priorizar el ahorro de dinero (<span class="highlight-text">Precio</span>) o el ahorro de tiempo (<span class="highlight-text">Distancia</span>) con un sistema de desempate automático inteligente.
+            Permite elegir si priorizar el ahorro de dinero (<span class="highlight-text">Precio</span>) o el ahorro de
+            tiempo (<span class="highlight-text">Distancia</span>) con un sistema de desempate automático inteligente.
           </li>
           <li>
             <strong>Acceso Directo a Rutas</strong>
-            Genera accesos directos dinámicos a Google Maps para trazar la ruta de navegación GPS directa hacia la gasolinera seleccionada con un solo clic.
+            Genera accesos directos dinámicos a Google Maps para trazar la ruta de navegación GPS directa hacia la
+            gasolinera seleccionada con un solo clic.
           </li>
         </ul>
       </section>
@@ -256,19 +267,24 @@
         <ul>
           <li>
             <strong>Descarga y Caché del Ministerio</strong>
-            Consume diariamente los datos del Geoportal de Gasolineras del Gobierno de España. Para optimizar el ancho de banda y la velocidad, refresca automáticamente la base de datos local sólo a partir de las <span class="highlight-text">06:00 AM</span>.
+            Consume diariamente los datos del Geoportal de Gasolineras del Gobierno de España. Para optimizar el ancho
+            de banda y la velocidad, refresca automáticamente la base de datos local sólo a partir de las <span
+              class="highlight-text">06:00 AM</span>.
           </li>
           <li>
             <strong>Procesamiento en Python y Pandas</strong>
-            Limpia el archivo de origen (XLS), convirtiendo los formatos decimales, eliminando registros corruptos sin coordenadas y excluyendo estaciones sin precios publicados.
+            Limpia el archivo de origen (XLS), convirtiendo los formatos decimales, eliminando registros corruptos sin
+            coordenadas y excluyendo estaciones sin precios publicados.
           </li>
           <li>
             <strong>Cálculo de Distancia (Haversine)</strong>
-            Utiliza trigonometría esférica de alta precisión para determinar en tiempo real la distancia lineal exacta en kilómetros a cada estación sobre el globo terrestre.
+            Utiliza trigonometría esférica de alta precisión para determinar en tiempo real la distancia lineal exacta
+            en kilómetros a cada estación sobre el globo terrestre.
           </li>
           <li>
             <strong>Geocodificación y Ubicación Dinámica</strong>
-            Combina tres métodos de posicionamiento: geolocalización por GPS nativo del navegador del usuario, búsqueda textual de municipios mediante OpenStreetMap (Nominatim) o coordenadas ingresadas manualmente.
+            Combina tres métodos de posicionamiento: geolocalización por GPS nativo del navegador del usuario, búsqueda
+            textual de municipios mediante OpenStreetMap (Nominatim) o coordenadas ingresadas manualmente.
           </li>
         </ul>
       </section>
@@ -277,11 +293,13 @@
 
     <!-- Pie de página -->
     <footer>
-      <p>© 2026 combustible_ybarato.es · Desarrollado con Inteligencia Artificial</p>
-      <p><a href="app.py" title="Ver código de la aplicación">Ver aplicación</a> · Datos del Ministerio para la Transición Ecológica</p>
+      <p>© 2026 combustible_ybarato.es · Desarrollado por Jose L. Romero con Inteligencia Artificial para ybarato.es</p>
+      <p><a href="app.py" title="Ver código de la aplicación">Ver aplicación</a> · Datos del Ministerio para la
+        Transición Ecológica</p>
     </footer>
 
   </div>
 
 </body>
+
 </html>
