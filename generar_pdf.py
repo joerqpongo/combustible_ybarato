@@ -71,7 +71,7 @@ class NumberedCanvas(canvas.Canvas):
 
 
 def generar_pdf():
-    pdf_filename = "informe_ejecutivo.pdf"
+    pdf_filename = "informe ejecutivo.pdf"
     
     # Configurar el documento A4 con márgenes de 2cm
     doc = SimpleDocTemplate(
@@ -240,7 +240,7 @@ def generar_pdf():
     story.append(Paragraph("1. DESCRIPCIÓN DEL PROBLEMA", style_h1))
     story.append(Paragraph("<b>Contexto del Mercado de Hidrocarburos en España</b>", style_h2))
     story.append(Paragraph(
-        "En los últimos años, el precio de los combustibles en España ha experimentado una volatilidad extrema, impulsada por tensiones geopolíticas internacionales y fluctuaciones del barril Brent. A pesar de que el mercado es libre y competitivo, existe una gran dispersión de precios. En un radio de apenas 10 kilómetros, el precio de un mismo tipo de carburante puede variar hasta en un 20% entre diferentes marcas operadoras. Esta asimetría de precios representa un potencial ahorro neto de entre 10 y 15 euros por cada repostaje de un turismo de tamaño medio.",
+        "En los últimos años, el precio de los combustibles en España ha experimentado una volatilidad extrema, impulsada por tensiones geopolíticas internacionales y fluctuaciones del barril Brent. A pesar de que el mercado es libre y competitivo, existe una gran dispersión de precios. In una misma área metropolitana, o en un radio de apenas 10 kilómetros, el precio de un mismo tipo de carburante puede variar hasta en un 15% o 20% entre diferentes marcas operadoras. Esta asimetría de precios representa un potencial ahorro neto de entre 10 y 15 euros por cada repostaje de un turismo de tamaño medio.",
         style_normal
     ))
     story.append(Paragraph(
@@ -444,7 +444,7 @@ def generar_pdf():
     
     story.append(Spacer(1, 0.3 * cm))
     story.append(Paragraph("<b>Inversión Total Estimada Año 1: 5.305 €</b>", style_normal_bold))
-    story.append(Paragraph("El coste mensual recurrente del servicio a partir del segundo año se estabiliza en aproximadamente 80 €/mes para cubrir servidores de bajo consumo y tareas básicas de mantenimiento correctivo.", style_normal))
+    story.append(Paragraph("El coste mensual recurrente del servicio a partir del segundo año se estabiliza en aproximadamente 100 €/mes para cubrir servidores de bajo consumo y tareas básicas de mantenimiento correctivo.", style_normal))
 
     # Construir el PDF
     doc.build(story, canvasmaker=NumberedCanvas)
