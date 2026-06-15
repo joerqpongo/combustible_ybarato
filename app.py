@@ -300,8 +300,14 @@ def _parse_float(value) -> float:
 @st.cache_data(ttl=3600, show_spinner=False)
 def _load_from_url(url: str) -> pd.DataFrame:
     """Descarga y parsea el Excel del Geoportal. Cacheado 1 hora por Streamlit."""
-    resp = requests.get(url, timeout=30)
-    resp.raise_for_status()
+    try:
+        resp = requests.get(url, timeout=30)
+        resp.raise_for_status()
+    except requests.exceptions.SSLError:
+        import urllib3
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        resp = requests.get(url, timeout=30, verify=False)
+        resp.raise_for_status()
     with open(LOCAL_FILE, "wb") as f:
         f.write(resp.content)
     return _parse_excel(LOCAL_FILE)
