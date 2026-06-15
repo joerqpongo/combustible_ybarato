@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Despliegue en Producción - Gasorato</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --accent: #2563eb;
+            --accent-light: #eff6ff;
+            --warning: #ea580c;
+            --warning-light: #fff7ed;
+            --border: #e2e8f0;
+            --code-bg: #1e1e2e;
+            --code-text: #cdd6f4;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+        }
+
+        /* Menú Lateral */
+        nav {
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            overflow-y: auto;
+        }
+
+        .logo-container {
+            margin-bottom: 2.5rem;
+        }
+
+        .logo-container h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        nav a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        nav a:hover {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+        }
+
+        nav a.active {
+            background-color: var(--accent-light);
+            color: var(--accent);
+        }
+
+        /* Contenedor Principal */
+        main {
+            margin-left: 280px;
+            padding: 3rem 4rem;
+            max-width: 1000px;
+            width: calc(100% - 280px);
+        }
+
+        header {
+            margin-bottom: 3rem;
+        }
+
+        header h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Componentes / Tarjetas */
+        section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            scroll-margin-top: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+
+        /* Alerta Requisito */
+        .alert {
+            background-color: var(--warning-light);
+            border-left: 4px solid var(--warning);
+            padding: 1.25rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .alert h4 {
+            color: var(--warning);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Pasos Numéricos Visuales */
+        .steps {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .steps li {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .steps li::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 2rem;
+            height: 2rem;
+            background-color: var(--accent-light);
+            color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .steps {
+            counter-reset: step-counter;
+        }
+
+        .sub-steps {
+            list-style: disc;
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        /* Bloques de Código */
+        pre {
+            background-color: var(--code-bg);
+            padding: 1.25rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--code-text);
+        }
+
+        /* Tablas / Comandos Útiles */
+        .grid-comandos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .card-comando {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+        }
+
+        .card-comando h4 {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            color: var(--accent);
+        }
+
+        /* Diseño Responsivo */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            nav {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            main {
+                margin-left: 0;
+                width: 100%;
+                padding: 1.5rem;
+            }
+
+            .grid-comandos {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo-container">
+            <h1>🚀 combustible_ybarato</h1>
+        </div>
+        <ul>
+            <li><a href="#requisitos" class="active">⚠️ Requisito: Puertos</a></li>
+            <li><a href="#opcion1">🐳 Opción 1: Docker</a></li>
+            <li><a href="#opcion2">⚙️ Opción 2: Servicio Nativo</a></li>
+            <li><a href="#mantenimiento">🛠️ Mantenimiento</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <header>
+            <h2>Guía de Despliegue en Producción</h2>
+            <p>Pasos para la puesta en marcha del buscador en servidores AWS EC2 o VPS Linux.</p>
+        </header>
+
+        <section id="requisitos">
+            <h3>Configuración de Red Inicial</h3>
+            <div class="alert">
+                <h4>⚠️ Control de Tráfico en AWS</h4>
+                <p>Por defecto, AWS bloquea todo el tráfico entrante salvo el puerto 22 (SSH). Es obligatorio configurar
+                    el Grupo de Seguridad para permitir el acceso web.</p>
+            </div>
+
+            <p>Sigue estos pasos en la consola web de AWS antes de configurar el servidor:</p>
+            <ol class="steps">
+                <li>Ve a la consola de <strong>AWS EC2</strong> y selecciona tu instancia en ejecución.</li>
+                <li>En las pestañas de detalles inferiores, accede a <strong>Security (Seguridad)</strong> y haz clic en
+                    tu <strong>Security Group (Grupo de Seguridad)</strong> asignado.</li>
+                <li>Haz clic en el botón <strong>Edit inbound rules (Editar reglas de entrada)</strong>.</li>
+                <li>Añade una nueva regla según la estrategia de despliegue que prefieras:
+                    <ul class="sub-steps">
+                        <li><strong>Para Docker (Puerto 80):</strong> Tipo HTTP | Puerto 80 | Origen Cualquier lugar
+                            IPv4 (<code>0.0.0.0/0</code>)</li>
+                        <li><strong>Para Servicio Nativo (Puerto 8501):</strong> Tipo TCP personalizado | Puerto 8501 |
+                            Origen Cualquier lugar IPv4 (<code>0.0.0.0/0</code>)</li>
+                    </ul>
+                </li>
+                <li>Haz clic en <strong>Save rules (Guardar reglas)</strong> para aplicar los cambios en el cortafuegos.
+                </li>
+            </ol>
+        </section>
+
+        <section id="opcion1">
+            <h3>Opción 1: Despliegue con Docker (Recomendado)</h3>
+            <p>Esta metodología utiliza un contenedor aislado optimizado, evitando conflictos con versiones locales de
+                Python o librerías del sistema.</p>
+
+            <ol class="steps">
+                <li>
+                    <strong>Conexión al servidor vía SSH:</strong>
+                    <pre><code>ssh -i "tu_clave.pem" ubuntu@tu_ip_publica_aws</code></pre>
+                </li>
+                <li>
+                    <strong>Instalación y activación de Docker:</strong>
+                    <p>Si es un servidor nuevo, ejecuta la instalación base:</p>
+                    <pre><code>sudo apt update
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+
+# Opcional: Ejecutar docker sin sudo (requiere reiniciar sesión SSH)
+sudo usermod -aG docker $USER</code></pre>
+                </li>
+                <li>
+                    <strong>Clonación del repositorio del proyecto:</strong>
+                    <pre><code>git clone https://github.com/joerqpongo/combustible_ybarato.git
+cd combustible_ybarato</code></pre>
+                </li>
+                <li>
+                    <strong>Construcción de la imagen:</strong>
+                    <pre><code>docker build -t combustible-app .</code></pre>
+                </li>
+                <li>
+                    <strong>Ejecución del contenedor en segundo plano:</strong>
+                    <p>Mapeamos el puerto interno 8501 (Streamlit) al puerto estándar HTTP 80 del VPS.</p>
+                    <pre><code>docker run -d \
+  --name combustible-buscador \
+  -p 80:8501 \
+  --restart always \
+  combustible-app</code></pre>
+                </li>
+            </ol>
+        </section>
+
+        <section id="opcion2">
+            <h3>Opción 2: Servicio Nativo del Sistema (Systemd)</h3>
+            <p>Ideal si prefieres prescindir de capas de virtualización y deseas que Linux controle el proceso de la
+                aplicación directamente como un servicio nativo.</p>
+
+            <ol class="steps">
+                <li>
+                    <strong>Entorno de ejecución y dependencias:</strong>
+                    <pre><code>git clone https://github.com/joerqpongo/combustible_ybarato.git
+cd combustible_ybarato
+
+# Preparación del entorno virtual de Python
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt</code></pre>
+                </li>
+                <li>
+                    <strong>Creación del archivo de configuración de Systemd:</strong>
+                    <pre><code>sudo nano /etc/systemd/system/combustible.service</code></pre>
+                    <p>Copia y pega el siguiente contenido dentro del editor. Asegúrate de verificar las rutas absolutas
+                        si tu usuario no es <code>ubuntu</code>:</p>
+                    <pre><code>[Unit]
+Description=Buscador de Combustible Streamlit App
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/combustible_ybarato
+ExecStart=/home/ubuntu/combustible_ybarato/venv/bin/streamlit run app.py --server.port 8501 --server.address 0.0.0.0 --server.headless true
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+                </li>
+                <li>
+                    <strong>Activación e inicio del servicio:</strong>
+                    <pre><code># Notificar al sistema el nuevo archivo
+sudo systemctl daemon-reload
+
+# Habilitar el inicio automático con el sistema
+sudo systemctl enable combustible
+
+# Arrancar la aplicación inmediatamente
+sudo systemctl start combustible</code></pre>
+                </li>
+            </ol>
+        </section>
+
+        <section id="mantenimiento">
+            <h3>🛠️ Operaciones de Mantenimiento rápido</h3>
+            <p>Utiliza estos flujos de comandos una vez el sistema se encuentre operando en producción para realizar
+                diagnósticos o actualizaciones.</p>
+
+            <div class="grid-comandos">
+                <div class="card-comando">
+                    <h4>Gestión con Docker</h4>
+                    <p><strong>Estado:</strong> <code>docker ps</code></p>
+                    <p><strong>Logs en vivo:</strong> <code>docker logs -f combustible-buscador</code></p>
+                    <p><strong>Actualizar Versión:</strong></p>
+                    <pre><code>git pull
+docker build -t combustible-app .
+docker rm -f combustible-buscador
+docker run -d --name combustible-buscador -p 80:8501 --restart always combustible-app</code></pre>
+                </div>
+
+                <div class="card-comando">
+                    <h4>Gestión con Systemd</h4>
+                    <p><strong>Estado:</strong> <code>sudo systemctl status combustible</code></p>
+                    <p><strong>Logs en vivo:</strong> <code>journalctl -u combustible.service -f</code></p>
+                    <p><strong>Actualizar Versión:</strong></p>
+                    <pre><code>git pull
+source venv/bin/activate
+pip install -r requirements.txt
+sudo systemctl restart combustible</code></pre>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Efecto visual dinámico para marcar la sección activa en el menú lateral al hacer scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav ul li a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
